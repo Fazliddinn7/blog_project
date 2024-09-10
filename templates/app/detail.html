@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>News detail page</title>
+</head>
+<body>
+<h1>
+    {{ new.title }}
+</h1>
+<p>
+    Published date: {{ new.publish_time }}
+</p>
+<p>
+    {{ new.body | linebreaks }}
+</p>
+<p>
+    <img src="{{ new.image.url }}">
+</p>
+
+</body>
+</html>
