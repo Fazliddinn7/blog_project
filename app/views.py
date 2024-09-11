@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import TemplateView, ListView
+from django.urls import reverse_lazy
+from django.views.generic import TemplateView, ListView, UpdateView, DeleteView
 
 from .models import Category, News
 from .forms import ContactForm
@@ -111,3 +112,15 @@ def news_detail(request, slug):
         'new': new,
     }
     return render(request, 'app/detail.html', context)
+
+
+class NewsUpdateView(UpdateView):
+    model = News
+    fields = ('title', 'body', 'image', 'category', 'status')
+    template_name = 'crud/edit.html'
+
+
+class NewsDeleteView(DeleteView):
+    model = News
+    template_name = 'crud/delete.html'
+    success_url = reverse_lazy('home_page')

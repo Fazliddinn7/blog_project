@@ -1,22 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>News detail page</title>
-</head>
-<body>
-<h1>
-    {{ new.title }}
-</h1>
-<p>
-    Published date: {{ new.publish_time }}
-</p>
-<p>
-    {{ new.body | linebreaks }}
-</p>
-<p>
-    <img src="{{ new.image.url }}">
-</p>
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}News detail page{% endblock %}
 
-</body>
-</html>
+{% block content %}
+    <h1 >{{ new.title }}</h1>
+    <p>Published date: {{ new.publish_time }}</p>
+    <p><img src="{{ new.image.url }}"></p>
+    <p>{{ new.body | linebreaks }}</p>
+    <div class="card-footer text-center">
+        <a href="{% url 'news_edit_page' new.slug %}" class="btn btn-danger ml-2">Edit</a>|
+        <a href="{% url 'news_delete_page' new.slug %}" class=" btn btn-info ml-2">Delete</a>
+    </div>
+{% endblock %}
