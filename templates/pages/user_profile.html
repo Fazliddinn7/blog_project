@@ -1,0 +1,17 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}
+    My profile
+{% endblock %}
+
+{% block content %}
+    <h1>Profilingizga xush kelibsiz</h1>
+    <label>Username: </label>
+        <input value="{{ user.username }}" readonly placeholder="Kiritilmagan"><br>
+    <label>Email: </label>
+        <input value="{{ user.email }}" readonly placeholder="Kiritilmagan"><br>
+    <label>Fullname: </label>
+        <input value="{{ user.get_full_name }}" readonly placeholder="Kiritilmagan"><br>
+
+    <h1 class="btn btn-info ml-2"><a href="#">Passwordni almashtirish</a></h1>
+{% endblock %}
