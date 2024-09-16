@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.text import slugify
 
 
 class PublishedManager(models.Manager):
@@ -51,3 +52,8 @@ class News(models.Model):
 
     def get_absolute_url(self):
         return reverse('news_detail_page', args=[self.slug])
+
+    def save(self, *args, **kwargs):  # new
+        if not self.slug:
+            self.slug = slugify(self.title)
+        return super().save(*args, **kwargs)
