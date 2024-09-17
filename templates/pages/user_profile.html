@@ -5,7 +5,9 @@
 {% endblock %}
 
 {% block content %}
+
     <h1>Profilingizga xush kelibsiz</h1>
+    <h2 class="btn btn-info ml-2"><a href="{% url 'logout_page' %}">Accountdan chiqish</a></h2><br>
     <label>Username: </label>
         <input value="{{ user.username }}" readonly placeholder="Kiritilmagan"><br>
     <label>Email: </label>
@@ -13,5 +15,5 @@
     <label>Fullname: </label>
         <input value="{{ user.get_full_name }}" readonly placeholder="Kiritilmagan"><br>
 
-    <h1 class="btn btn-info ml-2"><a href="#">Passwordni almashtirish</a></h1>
+    <h1 class="btn btn-info ml-2"><a href="{% url "password_change" %}">Passwordni almashtirish</a></h1>
 {% endblock %}

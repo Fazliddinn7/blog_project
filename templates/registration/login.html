@@ -5,10 +5,18 @@
 {% endblock %}
 
 {% block content %}
-    <h2>Web-saytga kirish - login </h2>
-    <p>Iltimos, saytga kirish uchun formani to'ldiring</p>
-    <form method="post">{% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-danger ml-2">Login</button>
-    </form>
+    <div class="text-center">
+        <h2>Web-saytga kirish - login </h2>
+        <p>Iltimos, saytga kirish uchun formani to'ldiring</p>
+        <form method="post">{% csrf_token %}
+            {{ form.as_p }}
+            <div class="form-group">
+                <button class="btn btn-outline-info btn-green" type="submit">Login</button>
+                <small class="text-muted ml-2 btn-red">
+                    <a href="{% url 'password_reset' %}">Forgot Password?</a>
+                </small>
+            </div>
+        </form>
+    </div>
+
 {% endblock %}
