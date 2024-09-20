@@ -7,8 +7,11 @@
     <p>Published date: {{ new.publish_time }}</p>
     <p><img src="{{ new.image.url }}"></p>
     <p>{{ new.body | linebreaks }}</p>
+
+    {% if request.user.is_authenticated and request.user.is_superuser %}
     <div class="card-footer text-center">
         <a href="{% url 'news_edit_page' new.slug %}" class="btn btn-danger ml-2">Edit</a>|
         <a href="{% url 'news_delete_page' new.slug %}" class=" btn btn-info ml-2">Delete</a>
     </div>
+    {% endif %}
 {% endblock %}

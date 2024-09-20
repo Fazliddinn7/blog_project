@@ -1,13 +1,16 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, UpdateView, DeleteView, CreateView
 
+from root.custom_permissions import OnlyLoggedSuperUser
 from .models import Category, News
 from .forms import ContactForm
 
 
-class LocalPageView(ListView):
+class LocalPageView(LoginRequiredMixin, ListView):
     model = News
     template_name = 'pages/local.html'
     context_object_name = 'mahalliy_yangiliklar'
@@ -16,7 +19,7 @@ class LocalPageView(ListView):
         return self.model.published.filter(category__name='Mahalliy')
 
 
-class SportPageView(ListView):
+class SportPageView(LoginRequiredMixin, ListView):
     model = News
     template_name = 'pages/sport.html'
     context_object_name = 'sport_yangiliklar'
@@ -25,7 +28,7 @@ class SportPageView(ListView):
         return self.model.published.filter(category__name='Sport')
 
 
-class ForeignPageView(ListView):
+class ForeignPageView(LoginRequiredMixin, ListView):
     model = News
     template_name = 'pages/foreign.html'
     context_object_name = 'xorijiy_yangiliklar'
@@ -34,7 +37,7 @@ class ForeignPageView(ListView):
         return self.model.published.filter(category__name='Xorij')
 
 
-class TechnologyPageView(ListView):
+class TechnologyPageView(LoginRequiredMixin, ListView):
     model = News
     template_name = 'pages/technology.html'
     context_object_name = 'texnologiya_yangiliklar'
@@ -43,7 +46,7 @@ class TechnologyPageView(ListView):
         return self.model.published.filter(category__name='Texnologiya')
 
 
-class ContactPageView(TemplateView):
+class ContactPageView(LoginRequiredMixin, TemplateView):
     template_name = 'app/contact.html'
     form_class = ContactForm
     initial = {'key': 'value'}
@@ -83,7 +86,7 @@ class ContactPageView(TemplateView):
 #     return render(request, 'index.html', context)
 
 
-class HomePageView(ListView):
+class HomePageView(LoginRequiredMixin, ListView):
     model = News
     template_name = 'index.html'
 
@@ -98,6 +101,7 @@ class HomePageView(ListView):
         return context
 
 
+@login_required
 def news_list(request):
     news_list = News.published.all()
     context = {
@@ -106,6 +110,7 @@ def news_list(request):
     return render(request, 'app/list.html', context)
 
 
+@login_required()
 def news_detail(request, slug):
     new = get_object_or_404(News, slug=slug, status=News.Status.PUBLISHED)
     context = {
@@ -114,19 +119,19 @@ def news_detail(request, slug):
     return render(request, 'app/detail.html', context)
 
 
-class NewsUpdateView(UpdateView):
+class NewsUpdateView(OnlyLoggedSuperUser, UpdateView):
     queryset = News.objects.filter(status=News.Status.PUBLISHED)
     fields = ('title', 'body', 'image', 'category', 'status')
     template_name = 'crud/edit.html'
 
 
-class NewsDeleteView(DeleteView):
+class NewsDeleteView(OnlyLoggedSuperUser, DeleteView):
     queryset = News.objects.filter(status=News.Status.PUBLISHED)
     template_name = 'crud/delete.html'
     success_url = reverse_lazy('home_page')
 
 
-class NewsCreateView(CreateView):
+class NewsCreateView(OnlyLoggedSuperUser, CreateView):
     model = News
     template_name = 'crud/create.html'
     fields = 'title', 'body', 'image', 'category', 'status'
