@@ -131,7 +131,6 @@ LOGIN_REDIRECT_URL = 'home_page'
 LOGIN_URL = 'login_page'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_BACKEND = 'django.core.mail.backend.console.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True

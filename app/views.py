@@ -6,8 +6,8 @@ from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, UpdateView, DeleteView, CreateView
 
 from root.custom_permissions import OnlyLoggedSuperUser
-from .models import Category, News
 from .forms import ContactForm
+from .models import News
 
 
 class LocalPageView(LoginRequiredMixin, ListView):
@@ -135,6 +135,3 @@ class NewsCreateView(OnlyLoggedSuperUser, CreateView):
     model = News
     template_name = 'crud/create.html'
     fields = 'title', 'body', 'image', 'category', 'status'
-
-
-
