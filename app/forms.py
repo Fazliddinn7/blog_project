@@ -17,4 +17,4 @@ class SubscriptionForm(forms.Form):
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comments
-        fields = ['user', 'comment']
+        fields = ['comment']

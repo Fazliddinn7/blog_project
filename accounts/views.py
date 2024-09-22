@@ -80,29 +80,3 @@ def admin_view(request):
     }
     return render(request, 'pages/admin_page.html', context)
 
-# def edit_user(request):
-#     if request.method == "POST":
-#         user_form = UserEditForm(instance=request.user, data=request.POST)
-#         profile_form = ProfileEditForm(instance=request.user.profiles,
-#                                        data=request.POST,
-#                                        files=request.FILES)
-#
-#         if user_form.is_valid() and profile_form.is_valid():
-#             user_form.save()
-#             profile_form.save()
-#             return redirect('profile_page')
-#     else:
-#         user_form = UserEditForm(instance=request.user)
-#         profile_form = ProfileEditForm(instance=request.user.profiles)
-#
-#     context = {
-#         'user_form': user_form,
-#         'profile_form': profile_form,
-#     }
-#
-#     return render(request, 'account/profile_edit.html', context)
-
-# class SignUpView(CreateView):
-#     form_class = UserRegistrationForm
-#     success_url = reverse_lazy('login_page')
-#     template_name = 'account/register.html'

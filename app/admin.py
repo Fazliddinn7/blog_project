@@ -10,7 +10,7 @@ admin.site.register(Contact)
 class CommentAdmin(admin.ModelAdmin):
     list_display = 'user', 'comment', 'created_at', 'active'
     list_filter = ['active', 'created_at']
-    search_fields = ['new', 'comment']
+    search_fields = ['user', 'comment']
     actions = ['disabled_comments', 'active_comments']
 
     def disabled_comments(self, request, queryset):

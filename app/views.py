@@ -6,7 +6,7 @@ from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, UpdateView, DeleteView, CreateView
 
 from root.custom_permissions import OnlyLoggedSuperUser
-from .forms import ContactForm
+from .forms import ContactForm, CommentForm
 from .models import News
 
 
@@ -66,27 +66,7 @@ class ContactPageView(LoginRequiredMixin, TemplateView):
         return render(request, self.template_name, {'form': form})
 
 
-# def home_view(request):
-#     categories = Category.objects.all()
-#     news_list = New.published.all().order_by('-publish_time')[:5]
-#     local_news = New.published.filter(category__name='Mahalliy')[:5]
-#     ommabop_news = New.published.all().order_by('-publish_time')[:5]
-#     sport_news = New.published.filter(category__name='Sport')[:5]
-#     technology_news = New.published.filter(category__name='Texnologiya')[:5]
-#     foreign_news = New.published.filter(category__name='Xorij')[:5]
-#     context = {
-#         'news_list': news_list,
-#         'categories': categories,
-#         'local_news': local_news,
-#         'ommabop_news': ommabop_news,
-#         'sport_news': sport_news,
-#         'technology_news': technology_news,
-#         'foreign_news': foreign_news,
-#     }
-#     return render(request, 'index.html', context)
-
-
-class HomePageView(LoginRequiredMixin, ListView):
+class HomePageView(ListView):
     model = News
     template_name = 'index.html'
 
@@ -101,6 +81,15 @@ class HomePageView(LoginRequiredMixin, ListView):
         return context
 
 
+class SearchReturnView(ListView):
+    model = News
+    template_name = 'app/search.html'
+    context_object_name = 'all_news'
+
+    def get_queryset(self):
+        pass
+
+
 @login_required
 def news_list(request):
     news_list = News.published.all()
@@ -110,11 +99,25 @@ def news_list(request):
     return render(request, 'app/list.html', context)
 
 
-@login_required()
 def news_detail(request, slug):
     new = get_object_or_404(News, slug=slug, status=News.Status.PUBLISHED)
+    comments = new.comments.filter(active=True)
+    new_comment = None
+    if request.method == 'POST':
+        comment_form = CommentForm(data=request.POST)
+        if comment_form.is_valid():
+            new_comment = comment_form.save(commit=False)
+            new_comment.new = new
+            new_comment.user = request.user
+            new_comment.save()
+            comment_form = CommentForm()
+    else:
+        comment_form = CommentForm()
     context = {
         'new': new,
+        'new_comment': new_comment,
+        'comments': comments,
+        'comment_form': comment_form,
     }
     return render(request, 'app/detail.html', context)
 

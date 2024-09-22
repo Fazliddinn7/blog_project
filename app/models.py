@@ -67,8 +67,8 @@ class Comments(models.Model):
                              related_query_name='comment')
     new = models.ForeignKey(News,
                             on_delete=models.CASCADE,
-                            related_name='news',
-                            related_query_name='new')
+                            related_name='comments',
+                            related_query_name='comment')
 
     comment = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
