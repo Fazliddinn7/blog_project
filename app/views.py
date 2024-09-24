@@ -1,9 +1,13 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
-from django.urls import reverse_lazy
-from django.views.generic import TemplateView, ListView, UpdateView, DeleteView, CreateView
+from django.urls import reverse_lazy, reverse
+from django.views.generic import TemplateView, ListView, UpdateView, DeleteView, CreateView, DetailView
+from django.views.generic.edit import FormMixin
+from hitcount.utils import get_hitcount_model
+from hitcount.views import HitCountMixin, HitCountDetailView
 
 from root.custom_permissions import OnlyLoggedSuperUser
 from .forms import ContactForm, CommentForm
@@ -81,13 +85,16 @@ class HomePageView(ListView):
         return context
 
 
-class SearchReturnView(ListView):
+class SearchResultListView(ListView):
     model = News
     template_name = 'app/search.html'
     context_object_name = 'all_news'
 
     def get_queryset(self):
-        pass
+        query = self.request.GET.get('search')
+        return News.objects.filter(Q(title__icontains=query) |
+                                   Q(body__icontains=query)
+                                   )
 
 
 @login_required
@@ -99,27 +106,48 @@ def news_list(request):
     return render(request, 'app/list.html', context)
 
 
-def news_detail(request, slug):
-    new = get_object_or_404(News, slug=slug, status=News.Status.PUBLISHED)
-    comments = new.comments.filter(active=True)
-    new_comment = None
-    if request.method == 'POST':
-        comment_form = CommentForm(data=request.POST)
-        if comment_form.is_valid():
-            new_comment = comment_form.save(commit=False)
-            new_comment.new = new
-            new_comment.user = request.user
-            new_comment.save()
-            comment_form = CommentForm()
-    else:
-        comment_form = CommentForm()
-    context = {
-        'new': new,
-        'new_comment': new_comment,
-        'comments': comments,
-        'comment_form': comment_form,
-    }
-    return render(request, 'app/detail.html', context)
+class NewHitCountDetailView(FormMixin, HitCountDetailView):
+    model = News
+    template_name = 'app/detail.html'
+    count_hit = True
+    form_class = CommentForm
+
+    def get_success_url(self):
+        return reverse('news_detail_page', kwargs={'slug': self.object.slug})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.object:
+            hit_count = get_hitcount_model().objects.get_for_object(self.object)
+            hits = hit_count.hits
+            context['hitcount'] = {'pk': hit_count.pk}
+
+            if self.count_hit:
+                hit_count_response = self.hit_count(self.request, hit_count)
+                if hit_count_response.hit_counted:
+                    hits = hits + 1
+                context['hitcount']['hit_counted'] = hit_count_response.hit_counted
+                context['hitcount']['hit_message'] = hit_count_response.hit_message
+
+            context['hitcount']['total_hits'] = hits
+        context['comments'] = self.object.comments.filter(active=True)
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        new_form = form.save(commit=False)
+        new_form.new = self.object
+        new_form.user = self.request.user
+        new_form.save()
+        return super().form_valid(form)
 
 
 class NewsUpdateView(OnlyLoggedSuperUser, UpdateView):

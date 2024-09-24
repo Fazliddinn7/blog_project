@@ -1,6 +1,6 @@
 {% extends 'app/base.html' %}
 {% load static %}
-
+{% load hitcount_tags %}
 {% block title %}
     Bosh sahifa
 {% endblock %}
@@ -42,7 +42,13 @@
                                     </a>
                                         <div class="media-body"><a href="{{ news.get_absolute_url }}"
                                                                    class="catg_title">{{ news.body | truncatewords:5 }}</a>
+                                            <h6>
+                                                Ko'rishlar soni: <i class="fa fa-eye"
+                                                                    aria-hidden="true">{% get_hit_count for news %}</i>
+                                            </h6>
                                         </div>
+
+
                                     </div>
                                 </li>
 
@@ -66,14 +72,21 @@
                             <ul class="business_catgnav  wow fadeInDown">
                                 {% for local in local_news %}
                                     {% if forloop.first %}
-                                <li>
-                                    <figure class="bsbig_fig"><a href="{{ local.get_absolute_url }}" class="featured_img">
-                                        <img alt="" src="{{ local.image.url }}"> <span
-                                            class="overlay"></span> </a>
-                                        <figcaption><a href="{{ local.get_absolute_url }}">{{ local.title | truncatewords:3 }}</a></figcaption>
-                                        <p>{{ local.body | truncatewords:8 }}...</p>
-                                    </figure>
-                                </li>
+                                        <li>
+                                            <figure class="bsbig_fig"><a href="{{ local.get_absolute_url }}"
+                                                                         class="featured_img">
+                                                <img alt="" src="{{ local.image.url }}"> <span
+                                                    class="overlay"></span> </a>
+                                                <figcaption><a
+                                                        href="{{ local.get_absolute_url }}">{{ local.title | truncatewords:3 }}</a>
+                                                </figcaption>
+                                                <p>{{ local.body | truncatewords:8 }}...</p>
+                                                <h6>
+                                                    Ko'rishlar soni: <i class="fa fa-eye"
+                                                                        aria-hidden="true">{% get_hit_count for local %}</i>
+                                                </h6>
+                                            </figure>
+                                        </li>
                                     {% endif %}
                                 {% endfor %}
                             </ul>
@@ -83,15 +96,20 @@
                                 {% for local in local_news %}
                                     {% if forloop.counter > 1 %}
 
-                                <li>
-                                    <div class="media wow fadeInDown"><a href="{{ local.get_absolute_url }}"
-                                                                         class="media-left"> <img alt=""
-                                                                                                  src="{{ local.image.url }}">
-                                    </a>
-                                        <div class="media-body"><a href="{{ local.get_absolute_url }}" class="catg_title">
-                                            {{ local.title | truncatewords:5 }}</a></div>
-                                    </div>
-                                </li>
+                                        <li>
+                                            <div class="media wow fadeInDown"><a href="{{ local.get_absolute_url }}"
+                                                                                 class="media-left"> <img alt=""
+                                                                                                          src="{{ local.image.url }}">
+                                            </a>
+                                                <div class="media-body"><a href="{{ local.get_absolute_url }}"
+                                                                           class="catg_title">
+                                                    {{ local.title | truncatewords:5 }}</a></div>
+                                                <p>
+                                                    Ko'rishlar soni: <i class="fa fa-eye"
+                                                                        aria-hidden="true">{% get_hit_count for local %}</i>
+                                                </p>
+                                            </div>
+                                        </li>
                                     {% endif %}
 
                                 {% endfor %}
@@ -105,30 +123,42 @@
                                 <ul class="business_catgnav wow fadeInDown">
                                     {% for sport in sport_news %}
                                         {% if forloop.first %}
-                                    <li>
-                                        <figure class="bsbig_fig"><a href="{{ sport.get_absolute_url }}" class="featured_img">
-                                            <img alt="" src="{{ sport.image.url }}"> <span
-                                                class="overlay"></span>
-                                        </a>
-                                            <figcaption><a href="{{ sport.get_absolute_url }}">{{ sport.title }}</a></figcaption>
-                                            <p>{{ sport.body | truncatewords:8 }}...</p>
-                                        </figure>
-                                    </li>
+                                            <li>
+                                                <figure class="bsbig_fig"><a href="{{ sport.get_absolute_url }}"
+                                                                             class="featured_img">
+                                                    <img alt="" src="{{ sport.image.url }}"> <span
+                                                        class="overlay"></span>
+                                                </a>
+                                                    <figcaption><a
+                                                            href="{{ sport.get_absolute_url }}">{{ sport.title }}</a>
+                                                    </figcaption>
+                                                    <p>{{ sport.body | truncatewords:8 }}...</p>
+                                                    <h6>
+                                                        Ko'rishlar soni: <i class="fa fa-eye"
+                                                                            aria-hidden="true">{% get_hit_count for sport %}</i>
+                                                    </h6>
+                                                </figure>
+                                            </li>
                                         {% endif %}
                                     {% endfor %}
                                 </ul>
                                 <ul class="spost_nav">
                                     {% for sport in sport_news %}
                                         {% if forloop.counter > 1 %}
-                                    <li>
-                                        <div class="media wow fadeInDown"><a href="{{ sport.get_absolute_url }}"
-                                                                             class="media-left"> <img alt=""
-                                                                                                      src="{{ sport.image.url }}">
-                                        </a>
-                                            <div class="media-body"><a href="{{ sport.get_absolute_url }}" class="catg_title">
-                                                {{ sport.title }}</a></div>
-                                        </div>
-                                    </li>
+                                            <li>
+                                                <div class="media wow fadeInDown"><a href="{{ sport.get_absolute_url }}"
+                                                                                     class="media-left"> <img alt=""
+                                                                                                              src="{{ sport.image.url }}">
+                                                </a>
+                                                    <div class="media-body"><a href="{{ sport.get_absolute_url }}"
+                                                                               class="catg_title">
+                                                        {{ sport.title }}</a></div>
+                                                    <p>
+                                                        Ko'rishlar soni: <i class="fa fa-eye"
+                                                                            aria-hidden="true">{% get_hit_count for sport %}</i>
+                                                    </p>
+                                                </div>
+                                            </li>
                                         {% endif %}
                                     {% endfor %}
                                 </ul>
@@ -139,35 +169,48 @@
                                 <h2><span>Texnologiya</span></h2>
                                 <ul class="business_catgnav">
                                     {% for texnologiya in technology_news %}
-                                    {% if forloop.first %}
-                                    <li>
-                                        <figure class="bsbig_fig wow fadeInDown"><a href="{{ texnologiya.get_absolute_url }}"
-                                                                                    class="featured_img"> <img alt=""
-                                                                                                               src="{{ texnologiya.image.url }}">
-                                            <span class="overlay"></span> </a>
-                                            <figcaption><a href="{{ texnologiya.get_absolute_url }}">{{ texnologiya.title }}</a></figcaption>
-                                            <p>{{ texnologiya.body | truncatewords:8 }}...</p>
-                                        </figure>
-                                    </li>
+                                        {% if forloop.first %}
+                                            <li>
+                                                <figure class="bsbig_fig wow fadeInDown"><a
+                                                        href="{{ texnologiya.get_absolute_url }}"
+                                                        class="featured_img"> <img alt=""
+                                                                                   src="{{ texnologiya.image.url }}">
+                                                    <span class="overlay"></span> </a>
+                                                    <figcaption><a
+                                                            href="{{ texnologiya.get_absolute_url }}">{{ texnologiya.title }}</a>
+                                                    </figcaption>
+                                                    <p>{{ texnologiya.body | truncatewords:8 }}...</p>
+                                                    <h6>
+                                                        Ko'rishlar soni: <i class="fa fa-eye"
+                                                                            aria-hidden="true">{% get_hit_count for texnologiya %}</i>
+                                                    </h6>
+                                                </figure>
+                                            </li>
 
-                                    {% endif %}
+                                        {% endif %}
 
-                                {% endfor %}
+                                    {% endfor %}
                                 </ul>
                                 <ul class="spost_nav">
                                     {% for texnologiya in technology_news %}
-                                    {% if forloop.counter > 1 %}
-                                    <li>
-                                        <div class="media wow fadeInDown"><a href="{{ texnologiya.get_absolute_url }}"
-                                                                             class="media-left"> <img alt=""
-                                                                                                      src="{{ texnologiya.image.url }}">
-                                        </a>
-                                            <div class="media-body"><a href="{{ texnologiya.get_absolute_url }}" class="catg_title">
-                                                {{ texnologiya.title }}</a></div>
-                                        </div>
-                                    </li>
-                                    {% endif %}
-                                {% endfor %}
+                                        {% if forloop.counter > 1 %}
+                                            <li>
+                                                <div class="media wow fadeInDown"><a
+                                                        href="{{ texnologiya.get_absolute_url }}"
+                                                        class="media-left"> <img alt=""
+                                                                                 src="{{ texnologiya.image.url }}">
+                                                </a>
+                                                    <div class="media-body"><a href="{{ texnologiya.get_absolute_url }}"
+                                                                               class="catg_title">
+                                                        {{ texnologiya.title }}</a></div>
+                                                    <p>
+                                                        Ko'rishlar soni: <i class="fa fa-eye"
+                                                                            aria-hidden="true">{% get_hit_count for texnologiya %}</i>
+                                                    </p>
+                                                </div>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
 
                                 </ul>
                             </div>
@@ -237,35 +280,46 @@
                         <div class="single_post_content_left">
                             <ul class="business_catgnav">
                                 {% for xorij in foreign_news %}
-                                {% if forloop.first %}
-                                <li>
-                                    <figure class="bsbig_fig  wow fadeInDown"><a class="featured_img"
-                                                                                 href="{{ xorij.get_absolute_url }}"> <img
-                                            src="{{ xorij.image.url }}" alt=""> <span
-                                            class="overlay"></span> </a>
-                                        <figcaption><a href="{{ xorij.get_absolute_url }}">{{ xorij.title }}</a></figcaption>
-                                        <p>{{ xorij.body | truncatewords:8 }}...</p>
-                                    </figure>
-                                </li>
-                                {% endif %}
-                            {% endfor %}
+                                    {% if forloop.first %}
+                                        <li>
+                                            <figure class="bsbig_fig  wow fadeInDown"><a class="featured_img"
+                                                                                         href="{{ xorij.get_absolute_url }}">
+                                                <img
+                                                        src="{{ xorij.image.url }}" alt=""> <span
+                                                    class="overlay"></span> </a>
+                                                <figcaption><a href="{{ xorij.get_absolute_url }}">{{ xorij.title }}</a>
+                                                </figcaption>
+                                                <p>{{ xorij.body | truncatewords:8 }}...</p>
+                                                <h6>
+                                                    Ko'rishlar soni: <i class="fa fa-eye"
+                                                                        aria-hidden="true">{% get_hit_count for xorij %}</i>
+                                                </h6>
+                                            </figure>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
                             </ul>
                         </div>
                         <div class="single_post_content_right">
                             <ul class="spost_nav">
                                 {% for xorij in foreign_news %}
-                                {% if forloop.counter > 1 %}
-                                <li>
-                                    <div class="media wow fadeInDown"><a href="{{ xorij.get_absolute_url }}"
-                                                                         class="media-left"> <img alt=""
-                                                                                                  src="{{ xorij.image.url }}">
-                                    </a>
-                                        <div class="media-body"><a href="{{ xorij.get_absolute_url }}" class="catg_title">
-                                            {{ xorij.title }}</a></div>
-                                    </div>
-                                </li>
-                                {% endif %}
-                            {% endfor %}
+                                    {% if forloop.counter > 1 %}
+                                        <li>
+                                            <div class="media wow fadeInDown"><a href="{{ xorij.get_absolute_url }}"
+                                                                                 class="media-left"> <img alt=""
+                                                                                                          src="{{ xorij.image.url }}">
+                                            </a>
+                                                <div class="media-body"><a href="{{ xorij.get_absolute_url }}"
+                                                                           class="catg_title">
+                                                    {{ xorij.title }}</a></div>
+                                            </div>
+                                            <p>
+                                                Ko'rishlar soni: <i class="fa fa-eye"
+                                                                    aria-hidden="true">{% get_hit_count for xorij %}</i>
+                                            </p>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
                             </ul>
                         </div>
                     </div>
@@ -276,14 +330,21 @@
                     <div class="single_sidebar">
                         <h2><span>Ommabop</span></h2>
                         <ul class="spost_nav">
-                        {% for ommabop in ommabop_news %}
-                            <li>
-                                <div class="media wow fadeInDown"><a href="{{ ommabop.get_absolute_url }}" class="media-left">
-                                    <img alt="" src="{{ ommabop.image.url }}"> </a>
-                                    <div class="media-body"><a href="{{ ommabop.get_absolute_url }}" class="catg_title">{{ ommabop.title }}</a></div>
-                                </div>
-                            </li>
-                        {% endfor %}
+                            {% for ommabop in ommabop_news %}
+                                <li>
+                                    <div class="media wow fadeInDown"><a href="{{ ommabop.get_absolute_url }}"
+                                                                         class="media-left">
+                                        <img alt="" src="{{ ommabop.image.url }}"> </a>
+                                        <div class="media-body"><a href="{{ ommabop.get_absolute_url }}"
+                                                                   class="catg_title">{{ ommabop.title }}</a>
+                                        </div>
+                                        <p>
+                                            Ko'rishlar soni: <i class="fa fa-eye"
+                                                                aria-hidden="true">{% get_hit_count for ommabop %}</i>
+                                        </p>
+                                    </div>
+                                </li>
+                            {% endfor %}
                         </ul>
                     </div>
                     <div class="single_sidebar">
@@ -364,7 +425,7 @@
                         <select class="catgArchive">
                             <option>Select Category</option>
                             {% for category in categories %}
-                            <option>{{ category.name }}</option>
+                                <option>{{ category.name }}</option>
                             {% endfor %}
                         </select>
                     </div>
