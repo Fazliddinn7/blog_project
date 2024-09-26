@@ -33,6 +33,7 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
+    'modeltranslation',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -113,6 +114,9 @@ LANGUAGES = [
     ('en', _('English')),
     ('ru', _('Russian')),
 ]
+
+MODELTRANSLATION_DEFAULT_LANGUAGE = 'uz'
+LOCALE_PATHS = BASE_DIR, 'locale'
 
 TIME_ZONE = 'Asia/Tashkent'
 

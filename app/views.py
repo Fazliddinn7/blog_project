@@ -2,12 +2,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
-from django.views.generic import TemplateView, ListView, UpdateView, DeleteView, CreateView, DetailView
+from django.views.generic import TemplateView, ListView, UpdateView, DeleteView, CreateView
 from django.views.generic.edit import FormMixin
 from hitcount.utils import get_hitcount_model
-from hitcount.views import HitCountMixin, HitCountDetailView
+from hitcount.views import HitCountDetailView
 
 from root.custom_permissions import OnlyLoggedSuperUser
 from .forms import ContactForm, CommentForm
@@ -165,4 +165,5 @@ class NewsDeleteView(OnlyLoggedSuperUser, DeleteView):
 class NewsCreateView(OnlyLoggedSuperUser, CreateView):
     model = News
     template_name = 'crud/create.html'
-    fields = 'title', 'body', 'image', 'category', 'status'
+    fields = ('title', 'title_uz', 'title_en', 'title_ru',
+              'body', 'body_uz', 'body_en', 'body_ru', 'image', 'category', 'status')

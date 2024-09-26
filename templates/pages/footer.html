@@ -1,3 +1,4 @@
+{% load i18n %}
 <footer id="footer">
         <div class="footer_top">
             <div class="row">
@@ -11,17 +12,17 @@
                         <h2>Tags</h2>
                         <ul class="tag_nav">
 
-                            <li><a href="{% url 'local_page' %}">Mahalliy</a></li>
-                            <li><a href="{% url 'sport_page' %}">Sport</a></li>
-                            <li><a href="{% url 'foreign_page' %}">Xorij</a></li>
-                            <li><a href="{% url 'technology_page' %}">Texnologiya</a></li>
+                            <li><a href="{% url 'local_page' %}">{% blocktrans %}Mahalliy{% endblocktrans %}</a></li>
+                            <li><a href="{% url 'sport_page' %}">{% blocktrans %}Sport{% endblocktrans %}</a></li>
+                            <li><a href="{% url 'foreign_page' %}">{% blocktrans %}Xorij{% endblocktrans %}</a></li>
+                            <li><a href="{% url 'technology_page' %}">{% blocktrans %}Texnologiya{% endblocktrans %}</a></li>
 
                         </ul>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-4">
                     <div class="footer_widget wow fadeInRightBig">
-                        <h2>Contact</h2>
+                        <h2>{% blocktrans %}Contact{% endblocktrans %}</h2>
                         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
                             labore et dolore magna aliqua Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
                         <address>
